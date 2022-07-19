@@ -20,6 +20,9 @@ import time
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("Visualize Self-Attention maps")
+    parser.add_argument('--pretrained_weights',
+                        default='/home/thomas/Documents/phd/samno_paper/samno/output/dino_deitsmall16_pretrain.pth', )
+    parser.add_argument('--checkpoint_key', default='teacher', )
     parser.add_argument(
         "--arch",
         default="vit_small",
@@ -53,7 +56,13 @@ if __name__ == "__main__":
         default=None,
         help="if save-feat-dir is not None, only computing features and save it into save-feat-dir",
     )
-    
+
+    parser.add_argument(
+        "--dataset_path",
+        default="/media/thomas/Samsung_T5/VOC12",
+        type=str,
+        help="Dataset name.",
+    )
     parser.add_argument(
         "--set",
         default="train",
@@ -125,13 +134,13 @@ if __name__ == "__main__":
     if args.image_path is not None:
         dataset = ImageDataset(args.image_path, args.resize)
     else:
-        dataset = Dataset(args.dataset, args.set, args.no_hard)
+        dataset = Dataset(args.dataset_path, args.no_hard)
 
     # -------------------------------------------------------------------------------------------------------
     # Model
     device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
     #device = torch.device('cuda') 
-    model = get_model(args.arch, args.patch_size, device)
+    model = get_model(args.arch, args.patch_size, device, args.pretrained_weights, args.checkpoint_key)
 
     # -------------------------------------------------------------------------------------------------------
     # Directories
