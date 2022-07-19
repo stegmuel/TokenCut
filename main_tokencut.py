@@ -18,8 +18,9 @@ from object_discovery import ncut
 import matplotlib.pyplot as plt
 import time
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser("Visualize Self-Attention maps")
+
+def get_args_parser():
+    parser = argparse.ArgumentParser("Unsupervised object discovery with TokenCut.", add_help=False)
     parser.add_argument('--pretrained_weights',
                         default='/home/thomas/Documents/phd/samno_paper/samno/output/dino_deitsmall16_pretrain.pth', )
     parser.add_argument('--checkpoint_key', default='teacher', )
@@ -41,15 +42,6 @@ if __name__ == "__main__":
         "--patch_size", default=16, type=int, help="Patch resolution of the model."
     )
 
-    # Use a dataset
-    parser.add_argument(
-        "--dataset",
-        default="VOC07",
-        type=str,
-        choices=[None, "VOC07", "VOC12", "COCO20k"],
-        help="Dataset name.",
-    )
-    
     parser.add_argument(
         "--save-feat-dir",
         type=str,
@@ -119,13 +111,13 @@ if __name__ == "__main__":
     # Use dino-seg proposed method
     parser.add_argument("--dinoseg", action="store_true", help="Apply DINO-seg baseline.")
     parser.add_argument("--dinoseg_head", type=int, default=4)
+    return parser
 
-    args = parser.parse_args()
 
+def run_tokencut(args):
     if args.image_path is not None:
         args.save_predictions = False
         args.no_evaluation = True
-        args.dataset = None
 
     # -------------------------------------------------------------------------------------------------------
     # Dataset
@@ -330,3 +322,9 @@ if __name__ == "__main__":
         with open(result_file, 'w') as f:
             f.write('corloc,%.1f,,\n'%(100*np.sum(corloc)/cnt))
         print('File saved at %s'%result_file)
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser('LOST', parents=[get_args_parser()])
+    args = parser.parse_args()
+    run_tokencut(args)
