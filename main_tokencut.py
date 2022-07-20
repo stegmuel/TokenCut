@@ -159,8 +159,8 @@ def run_tokencut(args):
         vis_folder = f"{args.output_dir}/{exp_name}"
         os.makedirs(vis_folder, exist_ok=True)
         
-    if args.save_feat_dir is not None : 
-        os.mkdir(args.save_feat_dir)
+    # if args.save_feat_dir is not None :
+    #     os.mkdir(args.save_feat_dir)
 
     # -------------------------------------------------------------------------------------------------------
     # Loop over images
@@ -260,9 +260,9 @@ def run_tokencut(args):
                         #feats = v[:, 1:, :]
                         feats = v
                         
-                    if args.save_feat_dir is not None : 
-                        np.save(os.path.join(args.save_feat_dir, im_name.replace('.jpg', '.npy').replace('.jpeg', '.npy').replace('.png', '.npy')), feats.cpu().numpy())
-                        continue
+                    # if args.save_feat_dir is not None :
+                    #     np.save(os.path.join(args.save_feat_dir, im_name.replace('.jpg', '.npy').replace('.jpeg', '.npy').replace('.png', '.npy')), feats.cpu().numpy())
+                    #     continue
 
             else:
                 raise ValueError("Unknown model.")
