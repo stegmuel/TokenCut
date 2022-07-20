@@ -43,7 +43,7 @@ def get_args_parser():
     )
 
     parser.add_argument(
-        "--save-feat-dir",
+        "--save_feat_dir",
         type=str,
         default=None,
         help="if save-feat-dir is not None, only computing features and save it into save-feat-dir",
@@ -54,6 +54,12 @@ def get_args_parser():
         default="/media/thomas/Samsung_T5/VOC12",
         type=str,
         help="Dataset name.",
+    )
+    parser.add_argument(
+        "--save-feat-dir",
+        type=str,
+        default=None,
+        help="if save-feat-dir is not None, only computing features and save it into save-feat-dir",
     )
     parser.add_argument(
         "--set",
@@ -106,7 +112,8 @@ def get_args_parser():
     parser.add_argument("--resize", type=int, default=None, help="Resize input image to fix size")
     parser.add_argument("--tau", type=float, default=0.2, help="Tau for seperating the Graph.")
     parser.add_argument("--eps", type=float, default=1e-5, help="Eps for defining the Graph.")
-    parser.add_argument("--no-binary-graph", action="store_true", default=False, help="Generate a binary graph where edge of the Graph will binary. Or using similarity score as edge weight.")
+    parser.add_argument("--no_binary_graph", action="store_true", default=False, help="Generate a binary graph where edge of the Graph will binary. Or using similarity score as edge weight.")
+
 
     # Use dino-seg proposed method
     parser.add_argument("--dinoseg", action="store_true", help="Apply DINO-seg baseline.")
@@ -159,8 +166,8 @@ def run_tokencut(args):
         vis_folder = f"{args.output_dir}/{exp_name}"
         os.makedirs(vis_folder, exist_ok=True)
         
-    # if args.save_feat_dir is not None :
-    #     os.mkdir(args.save_feat_dir)
+    if args.save_feat_dir is not None :
+        os.mkdir(args.save_feat_dir)
 
     # -------------------------------------------------------------------------------------------------------
     # Loop over images
@@ -260,9 +267,9 @@ def run_tokencut(args):
                         #feats = v[:, 1:, :]
                         feats = v
                         
-                    # if args.save_feat_dir is not None :
-                    #     np.save(os.path.join(args.save_feat_dir, im_name.replace('.jpg', '.npy').replace('.jpeg', '.npy').replace('.png', '.npy')), feats.cpu().numpy())
-                    #     continue
+                    if args.save_feat_dir is not None :
+                        np.save(os.path.join(args.save_feat_dir, im_name.replace('.jpg', '.npy').replace('.jpeg', '.npy').replace('.png', '.npy')), feats.cpu().numpy())
+                        continue
 
             else:
                 raise ValueError("Unknown model.")
