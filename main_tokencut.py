@@ -1,22 +1,19 @@
-import os
+from glob import glob
+import copy
 import argparse
-import random
-import pickle
-
-import torch
 import datetime
-import torch.nn as nn
-import numpy as np
-
-from tqdm import tqdm
-from PIL import Image
-
-from networks import get_model
-from datasets import ImageDataset, Dataset, bbox_iou
-from visualizations import visualize_img, visualize_eigvec, visualize_predictions, visualize_predictions_gt 
-from object_discovery import ncut 
-import matplotlib.pyplot as plt
+import os
+import pickle
 import time
+
+import numpy as np
+import torch
+from tqdm import tqdm
+
+from datasets import ImageDataset, Dataset, bbox_iou
+from networks import get_model
+from object_discovery import ncut
+from visualizations import visualize_eigvec, visualize_predictions
 
 
 def get_args_parser():
